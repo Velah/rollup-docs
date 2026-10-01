@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Rollup for Confluence turns page-owned table data into calculated, grouped reports with visible totals.">
+    <title>Rollup for Confluence</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="nav-shell">
+        <a class="brand" href="index.html"><span class="brand-mark">Σ</span><span>Rollup for Confluence</span></a>
+        <nav class="site-nav" aria-label="Main navigation">
+          <a href="index.html" aria-current="page">Overview</a>
+          <a href="guide.html">Guide</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="support.html">Support</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-shell">
+          <div>
+            <p class="eyebrow">A working report inside the page</p>
+            <h1>Turn table rows into answers.</h1>
+            <p class="lede">Rollup adds formulas, nested grouping, subtotals, and grand totals to a Confluence macro. Authors configure the report once; readers see the same calculated result.</p>
+            <div class="status-line">
+              <span class="badge">Development release candidate</span>
+              <span>Not yet listed in Atlassian Marketplace</span>
+            </div>
+          </div>
+          <aside class="formula-card" aria-label="Example calculation flow">
+            <header>Vendor budget.report</header>
+            <ol>
+              <li><span>01</span><code>[Seats] * [Unit price]</code></li>
+              <li><span>02</span><code>DATEDIFF([Start], [End])</code></li>
+              <li><span>03</span><code>IF([Cost] &gt;= 100, "Review", "Within budget")</code></li>
+              <li><span>Σ</span><strong>Group by Vendor → Cost centre</strong></li>
+            </ol>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="capabilities-title">
+        <div class="section-heading">
+          <div><p class="eyebrow">Capabilities</p><h2 id="capabilities-title">From source rows to a readable rollup</h2></div>
+          <p>Report data and configuration stay with the macro. Calculations run in the signed-in reader’s browser, so the published result follows the saved source rather than a separate spreadsheet.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature"><span class="feature-number">01 / INPUT</span><h3>Type or import CSV</h3><p>Start in the editor or replace rows from a UTF-8 CSV after reviewing compatibility.</p></article>
+          <article class="feature"><span class="feature-number">02 / FORMULAS</span><h3>Calculate across columns</h3><p>Use arithmetic, comparisons, strict calendar dates, and lazy IF expressions with clear errors.</p></article>
+          <article class="feature"><span class="feature-number">03 / GROUPS</span><h3>Nest the report</h3><p>Choose ordered grouping levels that match the way readers scan the result.</p></article>
+          <article class="feature"><span class="feature-number">04 / TOTALS</span><h3>Summarize every level</h3><p>Add SUM, AVG, COUNT, MIN, or MAX at group levels and see numeric grand totals once.</p></article>
+          <article class="feature"><span class="feature-number">05 / PARITY</span><h3>Preview what readers get</h3><p>Editor and reader share the same calculation and error behavior.</p></article>
+          <article class="feature"><span class="feature-number">06 / STORAGE</span><h3>Keep the report with the page</h3><p>Rollup has no vendor-operated application backend, database, analytics, or telemetry in this release candidate.</p></article>
+        </div>
+      </section>
+
+      <section class="section proof" aria-labelledby="evidence-title">
+        <div class="proof-copy">
+          <p class="eyebrow">Dated development evidence</p>
+          <h2 id="evidence-title">A real saved and reloaded report</h2>
+          <p>On 19 September 2026, the development installation saved, published, and reloaded this synthetic five-row vendor report. Its two grouping levels, three formulas, five summary operations, and grand totals survived the round trip.</p>
+          <ul class="proof-list">
+            <li><span>Rows / columns</span><strong>5 / 9</strong></li>
+            <li><span>Grand Cost</span><strong>382</strong></li>
+            <li><span>Grand Days</span><strong>127</strong></li>
+            <li><span>Data</span><strong>Synthetic</strong></li>
+          </ul>
+          <p>A separate 5,000-row synthetic fixture was also saved, published, and reloaded in development with its exact CSV rows, 3 formulas, 2 grouping levels, and 5 summaries preserved. This is a tested example, not a universal capacity guarantee. See the <a href="guide.html#limits">documented limits</a>.</p>
+        </div>
+        <figure>
+          <img src="assets/vendor-budget-development.png" width="1485" height="1940" alt="Published Rollup report grouped by Vendor and Cost centre, with calculated Cost, Days, Status, five subtotal rows, and grand totals">
+          <figcaption>Development reader capture, 19 September 2026. Synthetic data; Confluence account chrome removed.</figcaption>
+        </figure>
+      </section>
+
+      <section class="section" aria-labelledby="availability-title">
+        <div class="section-heading">
+          <div><p class="eyebrow">Availability</p><h2 id="availability-title">Commercial setup is still pending</h2></div>
+          <div class="callout">
+            <p><strong>Planned offer:</strong> one paid edition targeting US$0.90 per user per month, with 1–10 users intended to be free and a 30-day Marketplace trial intended.</p>
+            <p>These terms and prices have not been configured or verified in Atlassian Marketplace. A listing URL and public availability will appear here only after Marketplace approval.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer"><div class="footer-shell"><span>Rollup for Confluence · Development documentation</span><span><a href="privacy.html">Privacy</a> · <a href="support.html">Support and security</a></span></div></footer>
+  </body>
+</html>

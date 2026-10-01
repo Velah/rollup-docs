@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Learn to import rows, write formulas, group data, and add totals in Rollup for Confluence.">
+    <title>Guide · Rollup for Confluence</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header"><div class="nav-shell"><a class="brand" href="index.html"><span class="brand-mark">Σ</span><span>Rollup for Confluence</span></a><nav class="site-nav" aria-label="Main navigation"><a href="index.html">Overview</a><a href="guide.html" aria-current="page">Guide</a><a href="privacy.html">Privacy</a><a href="support.html">Support</a></nav></div></header>
+    <main>
+      <header class="page-heading"><div class="section"><p class="eyebrow">User guide</p><h1>Build a rollup from source rows.</h1><p class="lede">Create the table, add calculated columns, choose the grouping order, and save. Readers get the same values and explanations you see in the editor.</p></div></header>
+      <article class="prose">
+        <div class="callout"><strong>Release status</strong><p>This guide describes the development release candidate tested on 19 September 2026. Rollup is not yet listed in Atlassian Marketplace.</p></div>
+
+        <h2>1. Add the macro and source rows</h2>
+        <ol>
+          <li>Insert <strong>Rollup Table</strong> on a Confluence page.</li>
+          <li>Name the report and its data columns.</li>
+          <li>Type values into the rows or choose a UTF-8 CSV file.</li>
+          <li>Review calculations and grouping, then choose <strong>Save table</strong>.</li>
+          <li>Publish or update the Confluence page so readers can open the saved result.</li>
+        </ol>
+        <p>CSV uses its first row as column names. A compatible import preserves calculated columns, grouping, and summaries. If the source shape is incompatible, Rollup explains which configuration would reset and waits for review before replacing rows. Invalid CSV leaves the existing draft intact.</p>
+
+        <h2>2. Add calculated columns</h2>
+        <p>Choose <strong>+ Formula column</strong>, give it a unique name, and enter a formula. Column names appear in square brackets. A leading <code>=</code> is optional.</p>
+        <ul class="recipe-list">
+          <li><code>[Seats] * [Unit price]</code><span>Multiply two numeric columns.</span></li>
+          <li><code>([List price] - [Discount]) * [Seats]</code><span>Control arithmetic order with parentheses.</span></li>
+          <li><code>DATEDIFF([Start], [End])</code><span>Return calendar days between two date columns.</span></li>
+          <li><code>DATEDIFF("2026-01-01", "2026-01-31")</code><span>Use quoted date text for literal dates.</span></li>
+          <li><code>IF([Cost] &gt;= 100, "Review", "Within budget")</code><span>Return text from a condition.</span></li>
+          <li><code>IF([Seats] = 0, 0, 10 / [Seats])</code><span>Avoid division by zero; IF evaluates only its selected branch.</span></li>
+        </ul>
+
+        <h3>Formula rules</h3>
+        <ul>
+          <li>Arithmetic operators are <code>+</code>, <code>-</code>, <code>*</code>, and <code>/</code>.</li>
+          <li>Comparisons are <code>=</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, and <code>&gt;=</code>.</li>
+          <li>Decimals use a dot without thousands separators: <code>1200.50</code>. A value such as <code>1,200.50</code> is rejected as nonnumeric.</li>
+          <li>Text uses double quotes. Double a quote inside text: <code>"He said ""yes"""</code>.</li>
+          <li>Boolean literals are <code>TRUE</code> and <code>FALSE</code>. Boolean comparisons support <code>=</code> and <code>!=</code>.</li>
+          <li>Text comparisons are case-sensitive and locale-independent.</li>
+          <li>Dates must be quoted or come from a column, use exactly <code>YYYY-MM-DD</code>, and exist in the UTC calendar. Leap years are checked.</li>
+          <li>Blank cells count as zero in arithmetic and numeric comparisons.</li>
+          <li>Formula columns can reference earlier or later calculated columns. Missing references and circular dependencies are errors, including inside a branch IF does not select.</li>
+        </ul>
+
+        <h2>3. Group and summarize</h2>
+        <p>In <strong>Group and summarize</strong>, add grouping columns in the order readers should see them. For example, Vendor followed by Cost centre produces one vendor section with cost-centre sections inside it.</p>
+        <p>Add any of these summaries to a source or calculated column:</p>
+        <table class="facts"><tbody>
+          <tr><th>SUM</th><td>Add numeric values.</td></tr>
+          <tr><th>AVG</th><td>Average numeric values.</td></tr>
+          <tr><th>COUNT</th><td>Count nonblank values, including text, booleans, and zero.</td></tr>
+          <tr><th>MIN / MAX</th><td>Find the smallest or largest numeric value.</td></tr>
+        </tbody></table>
+        <p>Blank values are skipped by summaries. A nonnumeric value or formula error makes a numeric summary show an explanation instead of a misleading partial answer. Grand totals summarize source rows once, even when the report has several grouping levels. Text-only and boolean-only columns are omitted from numeric grand totals.</p>
+
+        <h2>Understand errors</h2>
+        <p>Formula syntax is checked while you type. Save stays disabled until syntax and reference errors are fixed. At runtime, the affected cell explains errors such as a nonnumeric value, division by zero, an impossible date, or a nonboolean IF condition. Dependent calculated cells and summaries carry that explanation forward.</p>
+        <p>The editor and published reader use the same calculation path. On 19 September 2026, the development installation was checked with numeric-format, division-by-zero, impossible-date, and nonboolean-IF failures; both surfaces showed matching errors.</p>
+
+        <h2 id="limits">Limits and large reports</h2>
+        <table class="facts"><tbody>
+          <tr><th>Rows</th><td>Up to 10,000 per report.</td></tr>
+          <tr><th>Columns</th><td>Up to 100.</td></tr>
+          <tr><th>Cell text</th><td>Up to 10,000 characters.</td></tr>
+          <tr><th>Formula</th><td>Up to 2,000 characters.</td></tr>
+          <tr><th>Saved report</th><td>4.5 MB serialized configuration safety budget.</td></tr>
+          <tr><th>CSV file</th><td>10 MB input limit.</td></tr>
+        </tbody></table>
+        <p>A synthetic 5,000-row, 9-column fixture was saved, published, and reloaded in development on 19 September 2026. It preserved exact CSV rows, three formulas, two grouping levels, and five summaries. The saved report JSON measured 1,066,756 bytes; the enclosing macro configuration JSON measured 1,216,977 bytes. This one fixture shows tested behavior, not a promise that every report under the limits has the same speed or size.</p>
+
+        <h2>Get help</h2>
+        <p>See <a href="support.html">support and security reporting</a> for the contact address and the details that help diagnose a report. Do not email real CSV files or confidential cell values.</p>
+      </article>
+    </main>
+    <footer class="site-footer"><div class="footer-shell"><span>Rollup for Confluence · Development documentation</span><span><a href="privacy.html">Privacy</a> · <a href="support.html">Support and security</a></span></div></footer>
+  </body>
+</html>
